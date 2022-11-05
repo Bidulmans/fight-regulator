@@ -1,7 +1,7 @@
 package eu.bidulaxstudio.fightregulator;
 
-import eu.bidulaxstudio.fightregulator.commands.ChangeModeCommand;
 import eu.bidulaxstudio.fightregulator.commands.ManageCommand;
+import eu.bidulaxstudio.fightregulator.commands.ChangeModeCommand;
 import eu.bidulaxstudio.fightregulator.listeners.EntityDamageListener;
 import eu.bidulaxstudio.fightregulator.utils.PlayerSettings;
 import eu.bidulaxstudio.fightregulator.utils.Settings;
@@ -28,8 +28,8 @@ public class FightRegulator extends JavaPlugin {
     }
 
     private void loadCommands() {
-        new ManageCommand(this);
         new ChangeModeCommand(this);
+        new ManageCommand(this);
     }
 
     private void loadListeners() {
