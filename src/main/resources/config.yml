@@ -1,0 +1,33 @@
+# The minimum time needed between PvP mode change for players is one week
+change-mode-cooldown: 604800
+# Settings applied on all the server
+server-settings:
+  # PvP is enabled
+  enable-pvp: true
+  # Players can choose if they enable PvP or not
+  enable-player-choice: true
+# Settings applied on a particular world
+world-settings:
+  # PvP is disabled by default but players can choose in the overworld
+  world:
+    enable-pvp: 'false'
+    # enable-player-choice is inherited from server settings
+  # PvP is disabled for everyone in the nether
+  world_nether:
+    enable-pvp: 'false'
+    enable-player-choice: 'false'
+  # Other worlds will follow the server settings
+messages:
+  pvp-prohibited: "§cYou can't hit this player because this player, you or the world doesn't allow PvP."
+  no-permission: "§cYou don't have the permission to do that."
+  not-connected: "§cThe requested player doesn't exist or isn't online."
+  not-a-player: "§cYou can't execute this command because you're not a player."
+  wait-cooldown: "§cYou have to wait the end of the cooldown before changing again your mode."
+  already-in-mode: "§cYou are already in mode '{MODE}'."
+  changed-mode: "§aYou successfully changed your mode to {MODE}."
+  changed-server: "§aYou successfully changed the server settings."
+  changed-world: "§aYou successfully changed the world settings."
+  changed-player-mode: "§aYou successfully changed this player's mode."
+  reset-player-cooldown: "§aYou successfully reset this player's cooldown."
+  player-mode: "§bThe PvP mode of {PLAYER} is '{MODE}'."
+  player-cooldown: "§bThe cooldown of {PLAYER} is {COOLDOWN} seconds."

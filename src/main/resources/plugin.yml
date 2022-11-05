@@ -1,0 +1,31 @@
+main: eu.bidulaxstudio.fightregulator.FightRegulator
+name: FightRegulator
+author: Bidulman
+version: 1.0
+api-version: 1.19
+description: Offers you more settings about PvP in your server
+commands:
+  pvp:
+    description: Change your PvP mode to "on", "off" or "default"
+    permission: fightregulator.change-mode
+    usage: /pvp [on / off / default]
+  manage-pvp:
+    description: Manage the config settings or the player settings
+    permission: fightregulator.manage
+    usage: /manage-pvp <server / world / player> [...args]
+permissions:
+  fightregulator.change-mode:
+    description: Allows you to change your PvP mode with /pvp
+    default: true
+  fightregulator.bypass-cooldown:
+    description: Allows you to change your PvP mode every time without paying attention to the cooldown
+    default: op
+  fightregulator.manage:
+    description: Allows you to use the /manage-pvp command
+    default: op
+  fightregulator.manage-server:
+    description: Allows you to edit the plugin configuration (server and worlds PvP settings)
+    default: op
+  fightregulator.manage-players:
+    description: Allows you to change the mode of other players and reset their cooldown
+    default: op
