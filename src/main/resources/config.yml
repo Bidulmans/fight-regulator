@@ -12,3 +12,4 @@ players-choose-mode:
     cant-disable: "§cYou still have to wait §e{time} §cminutes before disabling PvP."
     display-mode: "§bYou PvP mode is currently §e{mode}§b."
     changed-mode: "§aThe PvP mode of §e{player} §ais now §e{mode}§a."
+    bypass-a-disabled-player: "§eWarning ! This player disabled PvP."

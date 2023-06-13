@@ -1,6 +1,7 @@
 package eu.bidulaxstudio.fightregulator.listeners;
 
 import eu.bidulaxstudio.fightregulator.FightRegulator;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,12 +26,15 @@ public class EntityDamageByEntityListener implements Listener {
             return;
         }
 
-        if (!(plugin.getConfig().getStringList("players-choose-mode.excluded-worlds").contains(player.getWorld().getName()) || damager.hasPermission("fight-regulator.bypass"))) {
+        if (!(plugin.getConfig().getStringList("players-choose-mode.excluded-worlds").contains(player.getWorld().getName()))) {
             if (!plugin.playerSettings.getOrDefault(player.getUniqueId().toString(), false)) {
-                event.setCancelled(true);
-                return;
+                if (!damager.hasPermission("fight-regulator.bypass")) {
+                    event.setCancelled(true);
+                    return;
+                }
+                damager.spigot().sendMessage(TextComponent.fromLegacyText(plugin.getConfigMessage("players-choose-mode.messages.bypass-a-disabled-player")));
             }
-            if (!plugin.playerSettings.getOrDefault(damager.getUniqueId().toString(), false)) {
+            if (!(plugin.playerSettings.getOrDefault(damager.getUniqueId().toString(), false) || damager.hasPermission("fight-regulator.bypass"))) {
                 event.setCancelled(true);
                 return;
             }
