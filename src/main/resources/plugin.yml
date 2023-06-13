@@ -5,27 +5,21 @@ version: 1.0
 api-version: 1.19
 description: Offers you more settings about PvP in your server
 commands:
-  pvp:
-    description: Change your PvP mode to "on", "off" or "default"
-    permission: fightregulator.change-mode
-    usage: /pvp [on / off / default]
-  manage-pvp:
-    description: Manage the config settings or the player settings
-    permission: fightregulator.manage
-    usage: /manage-pvp <server / world / player> [...args]
+  fight-regulator:
+    description: Main command of the plugin.
+    aliases:
+      - pvp
+    usage: /fight-regulator [on/off] [player]
 permissions:
-  fightregulator.change-mode:
-    description: Allows you to change your PvP mode with /pvp
+  fight-regulator.use:
+    description: Allows you to use the main commmand of the plugin
     default: true
-  fightregulator.bypass-cooldown:
-    description: Allows you to change your PvP mode every time without paying attention to the cooldown
+  fight-regulator.change:
+    description: Allows you to change your PvP mode
+    default: true
+  fight-regulator.change-others:
+    description: Allows you to change others PvP mode
     default: op
-  fightregulator.manage:
-    description: Allows you to use the /manage-pvp command
-    default: op
-  fightregulator.manage-server:
-    description: Allows you to edit the plugin configuration (server and worlds PvP settings)
-    default: op
-  fightregulator.manage-players:
-    description: Allows you to change the mode of other players and reset their cooldown
+  fight-regulator.bypass:
+    description: Allows you to hit other players even if it is forbidden
     default: op

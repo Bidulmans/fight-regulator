@@ -1,89 +1,102 @@
 package eu.bidulaxstudio.fightregulator;
 
-import eu.bidulaxstudio.fightregulator.commands.ManageCommand;
-import eu.bidulaxstudio.fightregulator.commands.ChangeModeCommand;
-import eu.bidulaxstudio.fightregulator.listeners.EntityDamageListener;
-import eu.bidulaxstudio.fightregulator.utils.PlayerSettings;
-import eu.bidulaxstudio.fightregulator.utils.Settings;
-import eu.bidulaxstudio.fightregulator.utils.WorldSettings;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.World;
-import org.bukkit.command.CommandSender;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import eu.bidulaxstudio.fightregulator.commands.MainCommand;
+import eu.bidulaxstudio.fightregulator.listeners.EntityDamageByEntityListener;
+import eu.bidulaxstudio.fightregulator.listeners.PlayerJoinListener;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class FightRegulator extends JavaPlugin {
-    private Settings settings;
+import java.io.*;
+import java.lang.reflect.Type;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+
+public class FightRegulator extends JavaPlugin implements CommandExecutor, TabCompleter, Listener {
+    public final Map<Player, Long> lastDamage = new HashMap<>();
+    public final Map<Player, Long> lastJoin = new HashMap<>();
+    public final Map<String, Boolean> playerSettings = new HashMap<>();
 
     @Override
     public void onEnable() {
-        loadSettings();
+        saveDefaultConfig();
+        loadPlayerSettings();
+        loadOnlinePlayers();
         loadCommands();
         loadListeners();
     }
 
-    private void loadSettings() {
-        settings = new Settings(this);
+    @Override
+    public void onDisable() {
+        savePlayerSettings();
     }
 
     private void loadCommands() {
-        new ChangeModeCommand(this);
-        new ManageCommand(this);
+        new MainCommand(this);
     }
 
     private void loadListeners() {
-        new EntityDamageListener(this);
+        getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
     }
 
-    public Settings getSettings() {
-        return settings;
+    private void loadOnlinePlayers() {
+        for (Player player : getServer().getOnlinePlayers()) {
+            lastJoin.put(player, Timestamp.from(Instant.now()).getTime());
+        }
     }
 
-    public void sendMessage(CommandSender target, String message) {
-        target.sendMessage(message);
+    private void loadPlayerSettings() {
+        String playerSettingsFile = getConfig().getString("players-choose-mode.file");
+        File file = new File(getDataFolder(), playerSettingsFile);
+
+        if (!file.exists()) {
+            return;
+        }
+
+        Gson gson = new Gson();
+
+        try (Reader reader = new FileReader(file)) {
+            Type type = new TypeToken<Map<String, Boolean>>() {}.getType();
+            playerSettings.putAll(gson.fromJson(reader, type));
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        getLogger().info("Loaded " + playerSettingsFile);
     }
 
-    public void sendConfigMessage(CommandSender target, String path) {
-        sendMessage(target, settings.getMessage(path));
-    }
+    public void savePlayerSettings() {
+        String playerSettingsFile = getConfig().getString("players-choose-mode.file");
 
-    public void sendActionBarMessage(Player player, String message) {
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
-    }
+        synchronized (playerSettings) {
+            File file = new File(getDataFolder(), playerSettingsFile);
 
-    public void sendActionBarConfigMessage(Player player, String path) {
-        sendActionBarMessage(player, settings.getMessage(path));
-    }
-
-    public void setPlayerMode(Player player, String mode, boolean updateTime) {
-        PlayerSettings playerSettings;
-        if (updateTime) {
-            playerSettings = new PlayerSettings(mode);
-        } else {
-            PlayerSettings oldPlayerSettings = settings.getPlayerSettings(player.getUniqueId());
-            if (oldPlayerSettings == null) {
-                playerSettings = new PlayerSettings(mode, 0);
-            } else {
-                playerSettings = new PlayerSettings(mode, oldPlayerSettings.lastChange);
+            try (Writer writer = new FileWriter(file)) {
+                Gson gson = new GsonBuilder().create();
+                gson.toJson(playerSettings, writer);
+            } catch (IOException exception) {
+                exception.printStackTrace();
             }
         }
 
-        settings.setPlayerSettings(player.getUniqueId(), playerSettings);
+        getLogger().info("Saved " + playerSettingsFile);
     }
 
-    public boolean canDamage(Player damager, Player damaged) {
-        World world = damager.getWorld();
-        WorldSettings worldSettings = settings.getWorldSettings(world.getName());
-
-        boolean damagerHasEnabledPvP = settings.hasEnabledPvP(damager.getUniqueId(), worldSettings.enablePvP);
-        boolean damagedHasEnabledPvP = settings.hasEnabledPvP(damaged.getUniqueId(), worldSettings.enablePvP);
-
-        if (worldSettings.enablePlayerChoice) {
-            return damagerHasEnabledPvP && damagedHasEnabledPvP;
-        } else {
-            return worldSettings.enablePvP;
+    public String getConfigMessage(String path, String... replacements) {
+        String message = getConfig().getString(path);
+        for (int i = 0; i < replacements.length; i+=2) {
+            message = message.replace("{" + replacements[i].toLowerCase() + "}", replacements[i+1]);
         }
+
+        return message;
     }
 
 }
