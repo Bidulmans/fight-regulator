@@ -15,6 +15,8 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         plugin.updateLastJoin(event.getPlayer());
+
+        plugin.showPlayerMode(event.getPlayer(), plugin.getMode(event.getPlayer()));
     }
 
 }

@@ -8,12 +8,17 @@ import eu.bidulaxstudio.fightregulator.listeners.EntityDamageByEntityListener;
 import eu.bidulaxstudio.fightregulator.listeners.PlayerJoinListener;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -120,6 +125,8 @@ public class FightRegulator extends JavaPlugin implements CommandExecutor, TabCo
         }
 
         logModeChange(player, mode);
+
+        showPlayerMode(player, mode);
     }
 
     public void logModeChange(Player player, boolean mode) {
@@ -133,6 +140,25 @@ public class FightRegulator extends JavaPlugin implements CommandExecutor, TabCo
             }
         }
         getLogger().info(message);
+    }
+
+    public void showPlayerMode(Player player, boolean mode) {
+        ScoreboardManager manager = Bukkit.getScoreboardManager();
+        Scoreboard scoreboard = manager.getMainScoreboard();
+
+        Team team = scoreboard.getTeam("fight-regulator");
+        if (team == null) {
+            team = scoreboard.registerNewTeam("fight-regulator");
+            team.setDisplayName("Fight Regulator");
+            team.setColor(ChatColor.RED);
+            team.setAllowFriendlyFire(true);
+        }
+
+        if (mode) {
+            team.addEntry(player.getName());
+        } else {
+            team.removeEntry(player.getName());
+        }
     }
 
     private CoreProtectAPI getCoreProtect() {
