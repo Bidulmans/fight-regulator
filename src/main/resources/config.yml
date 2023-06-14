@@ -1,6 +1,7 @@
 players-choose-mode:
   file: "players.json"
   save-on-change: false
+  coreprotect-log: true
   disable-cooldown: 300
   excluded-worlds:
     - world_nether

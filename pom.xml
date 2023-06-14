@@ -18,6 +18,10 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+            <id>coreprotect-repo</id>
+            <url>https://maven.playpro.com/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -25,6 +29,12 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.19.3-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.coreprotect</groupId>
+            <artifactId>coreprotect</artifactId>
+            <version>21.3</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

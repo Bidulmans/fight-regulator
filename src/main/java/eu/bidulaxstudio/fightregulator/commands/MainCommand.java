@@ -4,8 +4,6 @@ import eu.bidulaxstudio.fightregulator.FightRegulator;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,8 +34,8 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            boolean mode = plugin.playerSettings.getOrDefault(player.getUniqueId().toString(), false);
-            player.sendMessage(plugin.getConfigMessage("players-choose-mode.messages.display-mode", "mode", mode ? "on" : "off"));
+            boolean mode = plugin.getMode(player);
+            player.sendMessage(plugin.getConfigMessage("players-choose-mode.messages.display-mode", "mode", FightRegulator.modeToString(mode)));
 
             return true;
         }
@@ -58,18 +56,17 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            String uuid = player.getUniqueId().toString();
-            if (mode == plugin.playerSettings.getOrDefault(uuid, false)) {
-                player.sendMessage(plugin.getConfigMessage("players-choose-mode.messages.already-mode", "player", player.getName(), "mode", mode ? "on" : "off"));
+            if (mode == plugin.getMode(player)) {
+                player.sendMessage(plugin.getConfigMessage("players-choose-mode.messages.already-mode", "player", player.getName(), "mode", FightRegulator.modeToString(mode)));
                 return true;
             }
 
             if (!(mode || player.hasPermission("fight-regulator.bypass"))) {
                 final long cooldown = plugin.getConfig().getLong("players-choose-mode.disable-cooldown") * 1000;
-                final long now = Timestamp.from(Instant.now()).getTime();
+                final long now = FightRegulator.getTime();
 
-                final long damageCooldown = now - plugin.lastDamage.getOrDefault(player, 0L);
-                final long joinCooldown = now - plugin.lastJoin.get(player);
+                final long damageCooldown = now - plugin.getLastDamage(player);
+                final long joinCooldown = now - plugin.getLastJoin(player);
 
                 if (damageCooldown < cooldown || joinCooldown < cooldown) {
                     int waitingTime = (int) Math.ceil((cooldown - Math.min(damageCooldown, joinCooldown)) / 60000f);
@@ -78,12 +75,8 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 }
             }
 
-            plugin.playerSettings.put(uuid, mode);
-            if (plugin.getConfig().getBoolean("players-choose-mode.save-on-change")) {
-                plugin.savePlayerSettings();
-            }
-
-            player.sendMessage(plugin.getConfigMessage("players-choose-mode.messages.changed-mode", "player", player.getName(), "mode", mode ? "on" : "off"));
+            plugin.setMode(player, mode);
+            player.sendMessage(plugin.getConfigMessage("players-choose-mode.messages.changed-mode", "player", player.getName(), "mode", FightRegulator.modeToString(mode)));
             return true;
         }
 
@@ -97,18 +90,15 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        String uuid = plugin.getServer().getPlayer(playerName).getUniqueId().toString();
-        if (mode == plugin.playerSettings.getOrDefault(uuid, false)) {
-            sender.sendMessage(plugin.getConfigMessage("players-choose-mode.messages.already-mode", "player", playerName, "mode", mode ? "on" : "off"));
+        Player player = plugin.getServer().getPlayer(playerName);
+
+        if (mode == plugin.getMode(player)) {
+            sender.sendMessage(plugin.getConfigMessage("players-choose-mode.messages.already-mode", "player", player.getName(), "mode", FightRegulator.modeToString(mode)));
             return true;
         }
 
-        plugin.playerSettings.put(uuid, mode);
-        if (plugin.getConfig().getBoolean("players-choose-mode.save-on-change")) {
-            plugin.savePlayerSettings();
-        }
-
-        sender.sendMessage(plugin.getConfigMessage("players-choose-mode.messages.changed-mode", "player", playerName, "mode", mode ? "on" : "off"));
+        plugin.setMode(player, mode);
+        sender.sendMessage(plugin.getConfigMessage("players-choose-mode.messages.changed-mode", "player", player.getName(), "mode", FightRegulator.modeToString(mode)));
         return true;
     }
 

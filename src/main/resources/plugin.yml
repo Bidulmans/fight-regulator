@@ -3,16 +3,18 @@ name: FightRegulator
 author: Bidulman
 version: 1.0
 api-version: 1.19
+softdepend:
+  - CoreProtect
 description: Offers you more settings about PvP in your server
 commands:
   fight-regulator:
-    description: Main command of the plugin.
+    description: Main command of the plugin
     aliases:
       - pvp
     usage: /fight-regulator [on/off] [player]
 permissions:
   fight-regulator.use:
-    description: Allows you to use the main commmand of the plugin
+    description: Allows you to use the main command of the plugin
     default: true
   fight-regulator.change:
     description: Allows you to change your PvP mode
