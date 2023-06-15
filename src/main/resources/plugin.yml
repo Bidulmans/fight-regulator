@@ -12,6 +12,7 @@ commands:
     aliases:
       - pvp
     usage: /fight-regulator [on/off] [player]
+    permission: fight-regulator.use
 permissions:
   fight-regulator.use:
     description: Allows you to use the main command of the plugin
