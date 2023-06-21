@@ -1,6 +1,6 @@
-package eu.bidulaxstudio.fightregulator.listeners;
+package eu.bidulman.fightregulator.listeners;
 
-import eu.bidulaxstudio.fightregulator.FightRegulator;
+import eu.bidulman.fightregulator.FightRegulator;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;

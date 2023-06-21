@@ -1,11 +1,11 @@
-package eu.bidulaxstudio.fightregulator;
+package eu.bidulman.fightregulator;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import eu.bidulaxstudio.fightregulator.commands.MainCommand;
-import eu.bidulaxstudio.fightregulator.listeners.EntityDamageByEntityListener;
-import eu.bidulaxstudio.fightregulator.listeners.PlayerJoinListener;
+import eu.bidulman.fightregulator.commands.MainCommand;
+import eu.bidulman.fightregulator.listeners.EntityDamageByEntityListener;
+import eu.bidulman.fightregulator.listeners.PlayerJoinListener;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
 import org.bukkit.Bukkit;

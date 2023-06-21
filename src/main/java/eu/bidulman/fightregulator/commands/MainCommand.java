@@ -1,6 +1,6 @@
-package eu.bidulaxstudio.fightregulator.commands;
+package eu.bidulman.fightregulator.commands;
 
-import eu.bidulaxstudio.fightregulator.FightRegulator;
+import eu.bidulman.fightregulator.FightRegulator;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 

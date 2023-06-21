@@ -1,6 +1,6 @@
-package eu.bidulaxstudio.fightregulator.listeners;
+package eu.bidulman.fightregulator.listeners;
 
-import eu.bidulaxstudio.fightregulator.FightRegulator;
+import eu.bidulman.fightregulator.FightRegulator;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
