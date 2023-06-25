@@ -1,4 +1,4 @@
-main: eu.bidulman.fightregulator.FightRegulator
+main: fr.bidulman.fightregulator.FightRegulator
 name: FightRegulator
 author: Bidulman
 version: 1.0
