@@ -2,7 +2,7 @@ main: fr.bidulman.fightregulator.FightRegulator
 name: FightRegulator
 author: Bidulman
 version: 1.0
-api-version: 1.19
+api-version: 1.20
 softdepend:
   - CoreProtect
 description: Offers you more settings about PvP in your server
