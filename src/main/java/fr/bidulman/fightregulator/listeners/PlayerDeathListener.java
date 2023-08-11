@@ -3,6 +3,7 @@ package fr.bidulman.fightregulator.listeners;
 import fr.bidulman.fightregulator.FightRegulator;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
@@ -16,7 +17,7 @@ public class PlayerDeathListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         if (player.getKiller() == null) {
