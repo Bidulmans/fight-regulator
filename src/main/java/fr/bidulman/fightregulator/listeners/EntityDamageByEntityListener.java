@@ -13,6 +13,9 @@ public class EntityDamageByEntityListener implements Listener {
 
     public EntityDamageByEntityListener(FightRegulator plugin) {
         this.plugin = plugin;
+        if (plugin.getConfig().getBoolean("players-choose-mode.enabled")) {
+            plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        }
     }
 
     @EventHandler

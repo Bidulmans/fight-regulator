@@ -24,6 +24,11 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!plugin.getConfig().getBoolean("players-choose-mode.enabled")) {
+            sender.sendMessage(plugin.getConfigMessage("players-choose-mode.messages.disabled"));
+            return true;
+        }
+
         if (args.length < 1) {
             if (!(sender instanceof Player player)) {
                 return false;

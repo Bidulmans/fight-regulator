@@ -16,10 +16,10 @@ commands:
 permissions:
   fight-regulator.use:
     description: Allows you to use the main command of the plugin
-    default: true
+    default: false
   fight-regulator.change:
     description: Allows you to change your PvP mode
-    default: true
+    default: false
   fight-regulator.change-others:
     description: Allows you to change others PvP mode
     default: op

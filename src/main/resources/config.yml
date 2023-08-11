@@ -1,4 +1,5 @@
 players-choose-mode:
+  enabled: false
   file: "players.json"
   save-on-change: false
   coreprotect-log: true
@@ -7,6 +8,7 @@ players-choose-mode:
     - world_nether
     - world_the_end
   messages:
+    disabled: "§cPlease enable §eplayers-choose-mode §cif you want this command to work."
     no-player: "§cPlayer §e{player} §cdoesn't exist or isn't connected."
     disabled-world: "§cSelecting a PvP mode is forbidden in this world."
     already-mode: "§cPlayer §e{player} §cis already in mode §e{mode}§c."
@@ -14,3 +16,8 @@ players-choose-mode:
     display-mode: "§bYou PvP mode is currently §e{mode}§b."
     changed-mode: "§aThe PvP mode of §e{player} §ais now §e{mode}§a."
     bypass-a-disabled-player: "§eWarning ! This player disabled PvP."
+pvp-keepinventory:
+  enabled: false
+  excluded-worlds:
+    - world_nether
+    - world_the_end

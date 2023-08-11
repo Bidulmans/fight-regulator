@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import fr.bidulman.fightregulator.commands.MainCommand;
 import fr.bidulman.fightregulator.listeners.EntityDamageByEntityListener;
+import fr.bidulman.fightregulator.listeners.PlayerDeathListener;
 import fr.bidulman.fightregulator.listeners.PlayerJoinListener;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
@@ -94,8 +95,9 @@ public class FightRegulator extends JavaPlugin implements CommandExecutor, TabCo
     }
 
     private void loadListeners() {
-        getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(this), this);
-        getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
+        new EntityDamageByEntityListener(this);
+        new PlayerJoinListener(this);
+        new PlayerDeathListener(this);
     }
 
     public Long getLastDamage(Player player) {
