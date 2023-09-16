@@ -23,11 +23,19 @@ public class PlayerDeathListener implements Listener {
         if (player.getKiller() == null) {
             return;
         }
+        if (player.getKiller() == player) {
+            return;
+        }
         if (plugin.getConfig().getStringList("pvp-keepinventory.excluded-worlds").contains(player.getWorld().getName())) {
             return;
         }
+
         event.setKeepInventory(true);
-        event.setKeepLevel(true);
         event.getDrops().clear();
+        
+        if (plugin.getConfig().getBoolean("pvp-keepinventory.keep-levels")) {
+            event.setKeepLevel(true);
+            event.setDroppedExp(0);
+        }
     }
 }

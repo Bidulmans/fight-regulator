@@ -18,6 +18,7 @@ players-choose-mode:
     bypass-a-disabled-player: "§eWarning ! This player disabled PvP."
 pvp-keepinventory:
   enabled: false
+  keep-levels: false
   excluded-worlds:
     - world_nether
     - world_the_end
